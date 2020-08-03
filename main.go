@@ -6,33 +6,52 @@ import (
 	"github.com/a0s/httpproxy-go"
 	"log"
 	"net/http"
+	"strings"
 )
 
 var (
-	httpEnabled  bool
-	httpsEnabled bool
-	port         uint
-	host         string
+	httpEnabled  = flag.Bool("http", false, "enable http proxy")
+	httpsEnabled = flag.Bool("https", false, "enable https proxy")
+	port         = flag.Uint("port", 8080, "bind to port")
+	host         = flag.String("host", "127.0.0.1", "bind to host")
 )
 
-func init() {
-	flag.BoolVar(&httpEnabled, "http", false, "enable http proxy")
-	flag.BoolVar(&httpsEnabled, "https", false, "enable https proxy")
-	flag.UintVar(&port, "port", 8080, "bind to port")
-	flag.StringVar(&host, "host", "127.0.0.1", "bind to host")
+func buildAddressString(host string, port uint) string {
+	return fmt.Sprintf("%v:%v", host, port)
+}
+
+func buildStatusString(address string, httpEnabled bool, httpsEnabled bool) string {
+	var protocols []string
+
+	if httpEnabled == true {
+		protocols = append(protocols, "http")
+	}
+	if httpsEnabled == true {
+		protocols = append(protocols, "https")
+	}
+	if len(protocols) == 0 {
+		protocols = append(protocols, "none")
+	}
+
+	withProtocols := strings.Join(protocols, ",")
+	statusString := fmt.Sprintf("bind to %v with %v", address, withProtocols)
+
+	return statusString
 }
 
 func main() {
 	flag.Parse()
 
+	address := buildAddressString(*host, *port)
+	statusString := buildStatusString(address, *httpEnabled, *httpsEnabled)
+	log.Printf(statusString)
+
 	proxy, _ := httpproxy.NewProxy()
 	proxy.OnConnect = OnConnect
-	proxy.HttpEnabled = httpEnabled
-	proxy.HttpsEnabled = httpsEnabled
+	proxy.HttpEnabled = *httpEnabled
+	proxy.HttpsEnabled = *httpsEnabled
 
-	addr := fmt.Sprintf("%s:%d", host, port)
-	log.Println("Proxy listening on", addr)
-	if err := http.ListenAndServe(addr, proxy); err != nil {
+	if err := http.ListenAndServe(address, proxy); err != nil {
 		panic(err)
 	}
 }

@@ -1,9 +1,9 @@
-FROM golang:1.14-alpine
+FROM golang:1.14-alpine AS builder
 WORKDIR /app
 COPY . /app
-RUN go build
+RUN CGO_ENABLED=0 go build -ldflags="-w -s" -o /app/httpproxy-go-runner
 
-FROM golang:1.14-alpine
+FROM scratch
 WORKDIR /app
-COPY --from=0 /app/httpproxy-go-runner .
+COPY --from=builder /app/httpproxy-go-runner .
 ENTRYPOINT ["/app/httpproxy-go-runner"]
