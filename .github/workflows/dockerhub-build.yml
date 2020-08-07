@@ -62,10 +62,10 @@ jobs:
             -t a00s/${{ steps.variables.outputs.REPOSITORY_NAME }}:latest \
             . \
             -o type=local,dest=build
-          tar czf httpproxy-go-runner-amd64.tar.gz build/linux_amd64/app/httpproxy-go-runner
-          tar czf httpproxy-go-runner-arm64.tar.gz build/linux_arm64/app/httpproxy-go-runner
-          tar czf httpproxy-go-runner-armv6.tar.gz build/linux_arm_v6/app/httpproxy-go-runner
-          tar czf httpproxy-go-runner-armv7.tar.gz build/linux_arm_v7/app/httpproxy-go-runner
+          tar -czf -C ./build/linux_amd64/app httpproxy-go-runner-amd64.tar.gz build/linux_amd64/app/httpproxy-go-runner
+          tar -czf -C ./build/linux_arm64/app httpproxy-go-runner-arm64.tar.gz build/linux_arm64/app/httpproxy-go-runner
+          tar -czf -C ./build/linux_arm_v6/app httpproxy-go-runner-armv6.tar.gz build/linux_arm_v6/app/httpproxy-go-runner
+          tar -czf -C ./build/linux_arm_v7/app httpproxy-go-runner-armv7.tar.gz build/linux_arm_v7/app/httpproxy-go-runner
 
       - name: upload httpproxy-go-runner-amd64
         uses: actions/upload-release-asset@v1.0.2
