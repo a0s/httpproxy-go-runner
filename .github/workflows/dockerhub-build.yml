@@ -62,47 +62,47 @@ jobs:
             -t a00s/${{ steps.variables.outputs.REPOSITORY_NAME }}:latest \
             -o type=local,dest=build \
             .
-          tar -C ./build/linux_amd64/app -czf httpproxy-go-runner-amd64.tar.gz httpproxy-go-runner
-          tar -C ./build/linux_arm64/app -czf httpproxy-go-runner-arm64.tar.gz httpproxy-go-runner
-          tar -C ./build/linux_arm_v6/app -czf httpproxy-go-runner-armv6.tar.gz httpproxy-go-runner
-          tar -C ./build/linux_arm_v7/app -czf httpproxy-go-runner-armv7.tar.gz httpproxy-go-runner
+          tar -C ./build/linux_amd64/app -czf ${{ steps.variables.outputs.REPOSITORY_NAME }}-amd64.tar.gz ${{ steps.variables.outputs.REPOSITORY_NAME }}
+          tar -C ./build/linux_arm64/app -czf ${{ steps.variables.outputs.REPOSITORY_NAME }}-arm64.tar.gz ${{ steps.variables.outputs.REPOSITORY_NAME }}
+          tar -C ./build/linux_arm_v6/app -czf ${{ steps.variables.outputs.REPOSITORY_NAME }}-armv6.tar.gz ${{ steps.variables.outputs.REPOSITORY_NAME }}
+          tar -C ./build/linux_arm_v7/app -czf ${{ steps.variables.outputs.REPOSITORY_NAME }}-armv7.tar.gz ${{ steps.variables.outputs.REPOSITORY_NAME }}
 
-      - name: upload httpproxy-go-runner-amd64
+      - name: upload ${{ steps.variables.outputs.REPOSITORY_NAME }}-amd64
         uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: httpproxy-go-runner-amd64.tar.gz
-          asset_name: httpproxy-go-runner-amd64.tar.gz
+          asset_path: ${{ steps.variables.outputs.REPOSITORY_NAME }}-amd64.tar.gz
+          asset_name: ${{ steps.variables.outputs.REPOSITORY_NAME }}-amd64.tar.gz
           asset_content_type: application/gzip
 
-      - name: upload httpproxy-go-runner-arm64
+      - name: upload ${{ steps.variables.outputs.REPOSITORY_NAME }}-arm64
         uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: httpproxy-go-runner-arm64.tar.gz
-          asset_name: httpproxy-go-runner-arm64.tar.gz
+          asset_path: ${{ steps.variables.outputs.REPOSITORY_NAME }}-arm64.tar.gz
+          asset_name: ${{ steps.variables.outputs.REPOSITORY_NAME }}-arm64.tar.gz
           asset_content_type: application/gzip
 
-      - name: upload httpproxy-go-runner-armv6
+      - name: upload ${{ steps.variables.outputs.REPOSITORY_NAME }}-armv6
         uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: httpproxy-go-runner-armv6.tar.gz
-          asset_name: httpproxy-go-runner-armv6.tar.gz
+          asset_path: h${{ steps.variables.outputs.REPOSITORY_NAME }}-armv6.tar.gz
+          asset_name: ${{ steps.variables.outputs.REPOSITORY_NAME }}-armv6.tar.gz
           asset_content_type: application/gzip
 
-      - name: upload httpproxy-go-runner-armv7
+      - name: upload ${{ steps.variables.outputs.REPOSITORY_NAME }}-armv7
         uses: actions/upload-release-asset@v1.0.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: httpproxy-go-runner-armv7.tar.gz
-          asset_name: httpproxy-go-runner-armv7.tar.gz
+          asset_path: ${{ steps.variables.outputs.REPOSITORY_NAME }}-armv7.tar.gz
+          asset_name: ${{ steps.variables.outputs.REPOSITORY_NAME }}-armv7.tar.gz
           asset_content_type: application/gzip
